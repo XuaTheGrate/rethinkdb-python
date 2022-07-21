@@ -75,7 +75,7 @@ def reusable_waiter(loop, timeout):
             new_timeout = max(deadline - loop.time(), 0)
         else:
             new_timeout = None
-        return (yield from asyncio.wait_for(future, new_timeout, loop=loop))
+        return (yield from asyncio.wait_for(future, new_timeout))
 
     return wait
 
@@ -233,7 +233,6 @@ class ConnectionInstance(object):
                     response = yield from asyncio.wait_for(
                         _read_until(self._streamreader, b"\0"),
                         timeout,
-                        loop=self._io_loop,
                     )
                     response = response[:-1]
         except ReqlAuthError:
